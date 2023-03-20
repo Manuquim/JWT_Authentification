@@ -17,17 +17,18 @@ api = Blueprint('api', __name__)
 def login():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
+    user=User.query.filter_by(email=email,password=password,is_active=True).first()
     #realizar la logica de validacion
-    if email != "test" or password != "test":
-        return jsonify({"msg": "Bad email or password"}), 401
+    if user:
+        access_token=create_access_token(identity=email)
+        response_body={"email":email,
+                        "access_token":access_token}
 
-    access_token = create_access_token(identity=email)
-    response_body={
-        "email":email,
-        "access_token":access_token
-    }
-    return jsonify(response_body)
-
+        return response_body,200
+    else:
+        response_body={"msg":"bad password or inactive user"}
+        
+        return response_body, 401
 
 # Protect a route with jwt_required, which will kick out requests
 # without a valid JWT present.
