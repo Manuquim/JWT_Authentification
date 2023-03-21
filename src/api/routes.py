@@ -26,8 +26,8 @@ def login():
 
         return response_body,200
     else:
-        response_body={"msg":"bad password or inactive user"}
-        
+        response_body={"msg":"invalid user,bad password or inactive user"}
+
         return response_body, 401
 
 # Protect a route with jwt_required, which will kick out requests
