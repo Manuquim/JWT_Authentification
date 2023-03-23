@@ -6,10 +6,14 @@ export const Login = () => {
     const {store,actions}=useContext(Context)
     const [email,setEmail]=useState('');
     const [password,setPassword]=useState('');
+    
+    const URL="https://3001-manuquim-jwtauthentific-vbqt29ydqpx.ws-eu92.gitpod.io";
 
-    const Navigate=useNavigate();
+    const navigate=useNavigate();
 
     const login = () => {
+        
+        console.log("entradas de email y password",email,password);
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
@@ -25,20 +29,22 @@ export const Login = () => {
             redirect: 'follow'
         };
 
-        fetch("https://3001-manuquim-jwtauthentific-vbqt29ydqpx.ws-eu90.gitpod.io/api/login", requestOptions)
+        fetch(`${URL}/api/login`, requestOptions)
             .then(response => response.json())
             .then(result =>{ 
-                    console.log(result);
+                    console.log("fetch  OK");
                     if (result.access_token){
-                        localStorage.setItem("token",access_token)
-                        Navigate("/demo");
+                        console.log("hemos entrado correctamente")
+                        localStorage.setItem("token",result.access_token)
+                        console.log("hemos entrado correctamente",result.access_token)
+                        navigate("/demo");
                     }
                     else{
                         store.message=result.message;
-                        Navigate("/login");
+                        navigate("/login");
                     }
             })
-            .catch(error => console.log('error', error));
+            .catch(error => console.log('error de fetch', error));
 
     }
 
@@ -47,21 +53,26 @@ export const Login = () => {
             <h3>Wellcome</h3>
             <form className="col-5 mx-auto">
                 <div className=" mb-3">
-                    <label for="exampleInputEmail1" className="form-label">Email address</label>
-                    <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                    onChange={(event)=>{setEmail(event.target.value)}}/>
+                    <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
+                    <input type="email" 
+                            className="form-control" 
+                            id="exampleInputEmail1" 
+                            aria-describedby="emailHelp"
+                            onChange={(event)=>{setEmail(event.target.value)}} value={email}/>
                     
                 </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword1" className="form-label">Password</label>
-                    <input type="password" className="form-control" id="exampleInputPassword1"
-                    onChange={(event)=>{setPassword(event.target.value)}}/>
+                <div className="mb-3">
+                    <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
+                    <input type="password" 
+                            className="form-control" 
+                            id="exampleInputPassword1"
+                            onChange={(event)=>{setPassword(event.target.value)}} value={password}/>
                 </div>
                 <button type="submit" className="btn btn-primary" 
-                 onClick={login}>Submit</button>
+                 onClick={login}>Login</button>
             </form>
             <div className="alert alert_info bg-secondary mt-3">
-                {store.message || "loading message from the backend (make sure the back is running"}
+                {store.message || "loading message from the backend (make sure the back is running)"}
             </div>
         </div>
 
