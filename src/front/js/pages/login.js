@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 export const Login = () => {
-    const {store,actions}=useContext(Context)
+    const {store,actions}=useContext(Context);
     const [email,setEmail]=useState('');
     const [password,setPassword]=useState('');
     
-    const URL="https://3001-manuquim-jwtauthentific-vbqt29ydqpx.ws-eu92.gitpod.io";
+    const URL="https://3001-manuquim-jwtauthentific-959gjnxbm26.ws-eu92.gitpod.io";
 
     const navigate=useNavigate();
 
@@ -34,18 +34,22 @@ export const Login = () => {
             .then(result =>{ 
                     console.log("fetch  OK");
                     if (result.access_token){
-                        console.log("hemos entrado correctamente")
                         localStorage.setItem("token",result.access_token)
                         console.log("hemos entrado correctamente",result.access_token)
                         navigate("/demo");
                     }
                     else{
                         store.message=result.message;
-                        navigate("/login");
+                        /*navigate("/login");*/
                     }
             })
             .catch(error => console.log('error de fetch', error));
 
+    }
+
+    const handleFetch = (e) =>{
+        e.preventDefault();
+        login();
     }
 
     return (
@@ -69,7 +73,7 @@ export const Login = () => {
                             onChange={(event)=>{setPassword(event.target.value)}} value={password}/>
                 </div>
                 <button type="submit" className="btn btn-primary" 
-                 onClick={login}>Login</button>
+                 onClick={handleFetch}>Login</button>
             </form>
             <div className="alert alert_info bg-secondary mt-3">
                 {store.message || "loading message from the backend (make sure the back is running)"}
