@@ -7,8 +7,6 @@ export const Login = () => {
     const [email,setEmail]=useState('');
     const [password,setPassword]=useState('');
     
-    URL="https://3001-manuquim-jwtauthentific-959gjnxbm26.ws-eu92.gitpod.io";
-
     const navigate=useNavigate();
 
     const login = () => {
@@ -29,7 +27,7 @@ export const Login = () => {
             redirect: 'follow'
         };
 
-        fetch(`${URL}/api/login`, requestOptions)
+        fetch(`${store.URL}/api/login`, requestOptions)
             .then(response => response.json())
             .then(result =>{ 
                     if (result.access_token){
@@ -38,7 +36,7 @@ export const Login = () => {
                     }
                     else{
                         store.message=result.message;
-                        navigate("/login");
+                        navigate("/signup");
                     }
             })
             .catch(error => console.log('error de fetch', error));

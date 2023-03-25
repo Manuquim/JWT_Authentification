@@ -13,7 +13,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			URL: "https://3001-manuquim-jwtauthentific-l9hq4f437sy.ws-eu92.gitpod.io"
 		},
 		actions: {
 			// Use getActions to call a function within a fuction

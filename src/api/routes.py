@@ -41,6 +41,7 @@ def protected():
         "email":current_user,
         "message":"logged_in"
     }
+    
     return jsonify(response_body), 200
 
 @api.route("/signup", methods=["POST"])

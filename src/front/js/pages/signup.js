@@ -7,8 +7,6 @@ export const Signup = () => {
     const [email,setEmail]=useState('');
     const [password,setPassword]=useState('');
     
-    const URL="https://3001-manuquim-jwtauthentific-959gjnxbm26.ws-eu92.gitpod.io";
-
     const navigate=useNavigate();
 
     const signup = () => {
@@ -28,7 +26,7 @@ export const Signup = () => {
             redirect: 'follow'
         };
 
-        fetch(`${URL}/api/signup`, requestOptions)
+        fetch(`${store.URL}/api/signup`, requestOptions)
             .then(response => response.json())
             .then(result =>{ 
                     if (result.codigo==220){
