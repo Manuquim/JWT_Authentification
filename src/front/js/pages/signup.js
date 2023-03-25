@@ -2,18 +2,17 @@ import React, {useState,useContext} from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 
-export const Login = () => {
+export const Signup = () => {
     const {store,actions}=useContext(Context);
     const [email,setEmail]=useState('');
     const [password,setPassword]=useState('');
     
-    URL="https://3001-manuquim-jwtauthentific-959gjnxbm26.ws-eu92.gitpod.io";
+    const URL="https://3001-manuquim-jwtauthentific-959gjnxbm26.ws-eu92.gitpod.io";
 
     const navigate=useNavigate();
 
-    const login = () => {
+    const signup = () => {
         
-        console.log("entradas de email y password",email,password);
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
@@ -29,30 +28,30 @@ export const Login = () => {
             redirect: 'follow'
         };
 
-        fetch(`${URL}/api/login`, requestOptions)
+        fetch(`${URL}/api/signup`, requestOptions)
             .then(response => response.json())
             .then(result =>{ 
-                    if (result.access_token){
-                        localStorage.setItem("token",result.access_token)
-                        navigate("/private");
+                    if (result.codigo==220){
+                        /*nuevo usuario*/
+                        navigate("/login");
                     }
                     else{
-                        store.message=result.message;
-                        navigate("/login");
+                        store.message=result.email+": "+result.message;
+                        navigate("/signup");
                     }
             })
             .catch(error => console.log('error de fetch', error));
 
     }
 
-    const handdleFetch = (e) =>{
+    const handdleSignup = (e) =>{
         e.preventDefault();
-        login();
+        signup();
     }
 
     return (
         <div className="text-center mt-5">
-            <h3>Login</h3>
+            <h3>Sign Up</h3>
             <form className="col-5 mx-auto">
                 <div className=" mb-3">
                     <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
@@ -71,7 +70,7 @@ export const Login = () => {
                             onChange={(event)=>{setPassword(event.target.value)}} value={password}/>
                 </div>
                 <button type="submit" className="btn btn-primary" 
-                 onClick={handdleFetch}>Login</button>
+                 onClick={handdleSignup}>Sign Up</button>
             </form>
             <div className="alert alert_info bg-secondary mt-3">
                 {store.message || "loading message from the backend (make sure the back is running)"}

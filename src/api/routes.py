@@ -26,7 +26,7 @@ def login():
 
         return response_body,200
     else:
-        response_body={"msg":"invalid user,bad password or inactive user"}
+        response_body={"message":"invalid user,bad password or inactive user"}
 
         return response_body, 410
 
@@ -42,6 +42,34 @@ def protected():
         "message":"logged_in"
     }
     return jsonify(response_body), 200
+
+@api.route("/signup", methods=["POST"])
+def signup():  
+    request_body = request.get_json()
+    emailEntrada=request_body['email']
+    passwordEntrada=request_body['password']
+
+    user=User.query.filter_by(email=emailEntrada).first()
+    #Comprobamos si ese usuario existe con ese email de entrada
+    if user:
+          response_body={
+            "email":emailEntrada,
+            "message":"Usuario ya existente",
+            "codigo":210}
+    else:
+        user = User(email=emailEntrada ,
+                password=passwordEntrada ,
+                is_active=True)
+
+        response_body={
+            "email":emailEntrada,
+            "message":"usuario creado",
+            "codigo":220}
+            
+        db.session.add(user)
+        db.session.commit()
+
+    return jsonify(response_body)
 
 
 @api.route('/hello', methods=['POST', 'GET'])
